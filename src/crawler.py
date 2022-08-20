@@ -20,8 +20,17 @@ class Crawler(object):
         encoder.update(input_str.encode())
         return encoder.hexdigest()
 
+    def multi_processing(self, input_list):
+        pool = multiprocessing.Pool(processes=6)
+        result = pool.map_async(self.multi_thread_crawling, input_list)
+        pool.close()
+        pool.join()
+        
+        return result
+        
+
     def multi_thread_crawling(self, batch_inputs):
-        # use queue object to collect return info from the crawlers
+        # use queue object to collect returned info from the crawlers
         q = Queue()
         threads = []
         for url in batch_inputs:
@@ -34,18 +43,13 @@ class Crawler(object):
 
         return [q.get() for i in range(q.qsize())]
 
-    def multi_processing(self, input_list):
-        pool = multiprocessing.Pool(processes=6)
-        result = pool.map_async(self.multi_thread_crawling, input_list)
-        pool.close()
-        pool.join()
-        
-        return result
 
     def crawling(self, url, Q_object):
         # url = "https://udn.com/news/cate/2/7227"
         try:
-            html = requests.get(url, headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0'}, timeout=5)
+            html = requests.get(url, 
+                            headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0'}, 
+                            timeout=5)
 
             if html.status_code == 200:
                 html.encoding = 'utf-8'

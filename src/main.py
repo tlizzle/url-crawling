@@ -9,7 +9,6 @@ def main():
     input_list = df.values.tolist()
     crawler = Crawler()
     result  = crawler.multi_processing(input_list)
-    # result = result.get()
 
     output = [i for r in result.get() for i in r]
 
