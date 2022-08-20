@@ -1,5 +1,5 @@
 # URL crawling process
-Given urls, the porocess utilizes multiprocessing plus multi-threading to crawl from many websites 
+Given urls, the porocess utilizes multiprocessing plus multi-threading to crawl from many websites.
 
 # Run (dev mode)
 - If virtual env already exists, activate: pipenv shell
